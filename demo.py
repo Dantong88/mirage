@@ -78,10 +78,10 @@ def demo(model_path, image_paths, prompt, num_retrievals=1):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, default="mirage_checkpoint")
-    parser.add_argument("--max-num-retrievals", type=int, default=1)
-    parser.add_argument("--image-folder", type=str, default="assets/example")
-    parser.add_argument("--prompt", type=str, default="Here are a set of random images in my photo album. If you can find a cat, tell me what's the cat doing and what's its color.")
+    parser.add_argument("--model-path", type=str, default="/home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B")
+    parser.add_argument("--max-num-retrievals", type=int, default=3)
+    parser.add_argument("--image-folder", type=str, default="/home/niudt/project/llarva_more/mirage/test_images")
+    parser.add_argument("--prompt", type=str, default="what do you see in these images")
     args = parser.parse_args()
     image_paths = [os.path.join(args.image_folder, image) for image in os.listdir(args.image_folder)]
     text_output, retrieval_output = demo(args.model_path, image_paths, args.prompt, args.max_num_retrievals)
