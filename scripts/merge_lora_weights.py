@@ -13,9 +13,9 @@ def merge_lora(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, required=True)
-    parser.add_argument("--model-base", type=str, required=True)
-    parser.add_argument("--save-model-path", type=str, required=True)
+    parser.add_argument("--model-path", type=str, required=False, default='')
+    parser.add_argument("--model-base", type=str, required=False, default='meta-')
+    parser.add_argument("--save-model-path", type=str, required=False)
 
     args = parser.parse_args()
 

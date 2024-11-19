@@ -68,7 +68,7 @@ def process_relevance_outputs(confidences, top_k=1):
     # confidence: 1, N
 
     # Step 1: Filter samples with confidence >= 0.5
-    valid_num = (confidences >= 0.5).sum()
+    valid_num = (confidences >= 0.0).sum()
     
     # Step 2 & 3: Check the number of valid samples
     if valid_num == 0:

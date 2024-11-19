@@ -81,7 +81,7 @@ if __name__ == "__main__":
     parser.add_argument("--model-path", type=str, default="/home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B")
     parser.add_argument("--max-num-retrievals", type=int, default=3)
     parser.add_argument("--image-folder", type=str, default="/home/niudt/project/llarva_more/mirage/test_images")
-    parser.add_argument("--prompt", type=str, default="what do you see in these images")
+    parser.add_argument("--prompt", type=str, default="what is the gripper's motion across these three images")
     args = parser.parse_args()
     image_paths = [os.path.join(args.image_folder, image) for image in os.listdir(args.image_folder)]
     text_output, retrieval_output = demo(args.model_path, image_paths, args.prompt, args.max_num_retrievals)

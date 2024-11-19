@@ -197,7 +197,7 @@ class LlavaMetaForCausalLM(ABC):
             duplications = torch.tensor(split_sizes, device=input_ids.device, dtype=torch.long)
             input_ids = torch.repeat_interleave(input_ids, duplications, dim=0)
             input_embeds = self.get_model().embed_tokens(input_ids)
-            input_embeds = self.get_model().get_retriever().text_projector(input_embeds)
+            # input_embeds = self.get_model().get_retriever().text_projector(input_embeds)
 
         image_features = self.get_model().get_qformer()(image_features)        
         image_features = self.get_model().mm_projector(image_features)

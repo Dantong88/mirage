@@ -902,7 +902,11 @@ class LLavaLazyDataset(Dataset):
             processor = self.data_args.image_processor
             clip_images = []
             for image_file in image_files:
-                image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
+                try:
+                    image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
+                except:
+                    random_image_array = np.random.randint(0, 256, (128, 128, 3), dtype=np.uint8)
+                    image = Image.fromarray(random_image_array)
                 clip_image = self.get_standard_image(image, processor)
                 clip_images.append(clip_image)
             if 'relevant_images' in sources[0]:

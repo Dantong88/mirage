@@ -1,18 +1,19 @@
 #!/bin/bash
 GPU_SETTINGS="localhost:0,1,2,3,4,5,6,7"
 MASTER_PORT="19487"
+export WANDB_PROJECT='llarva_mirage'
+export WANDB_NAME='close_jar_test'
 
 deepspeed --include $GPU_SETTINGS --master_port=$MASTER_PORT llava/train/train_mem.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --deepspeed ./scripts/zero3.json \
-    --model_name_or_path meta-llama/Meta-Llama-3.1-8B-Instruct \
+    --model_name_or_path /home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B_main \
     --version llama3 \
-    --data_path /home/yuvan/project/vhs_exploration_nov16/close_jar/val_4148.json \
+    --data_path /home/yuvan/project/vhs_exploration_nov16/close_jar/train_164953.json \
     --image_folder '' \
     --vision_tower openai/clip-vit-large-patch14-336 \
-    --pretrain_mm_mlp_adapter ./checkpoints/mirage_qformer_stage3_pretrain/mm_projector.pth \
-    --pretrain_qformer ./checkpoints/mirage_qformer_stage3_pretrain/qformer.pth \
-    --pretrain_retriever ./checkpoints/mirage_qformer_stage3_pretrain/retriever.pth \
+    --pretrain_mm_mlp_adapter /home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B_part/mm_projector.pth \
+    --pretrain_qformer /home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B_part/qformer.pth \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
@@ -21,7 +22,7 @@ deepspeed --include $GPU_SETTINGS --master_port=$MASTER_PORT llava/train/train_m
     --group_by_modality_length True \
     --bf16 True \
     --output_dir checkpoints/mirage_qformer_ft \
-    --num_train_epochs 1 \
+    --num_train_epochs 4 \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
@@ -42,5 +43,5 @@ deepspeed --include $GPU_SETTINGS --master_port=$MASTER_PORT llava/train/train_m
     --report_to wandb \
     --run_name mirage_qformer_ft \
     --mm_reduce_token_method qformer_query_aware \
-    --apply_retriever True \
+    --apply_retriever False \
     --tune_retriever False
