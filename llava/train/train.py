@@ -1114,13 +1114,26 @@ class DataCollatorForSupervisedDataset(object):
 def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer,
                                 data_args) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
-    train_dataset = LazySupervisedDataset(tokenizer=tokenizer,
-                                data_path=data_args.data_path,
-                                data_args=data_args)
-    data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
-    return dict(train_dataset=train_dataset,
-                eval_dataset=None,
-                data_collator=data_collator)
+    ann_list = data_args.data_path.split('::')
+    if len(ann_list) == 1:
+        train_dataset = LazySupervisedDataset(tokenizer=tokenizer,
+                                              data_path=ann_list[0],
+                                              data_args=data_args)
+        data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
+        return dict(train_dataset=train_dataset,
+                    eval_dataset=None,
+                    data_collator=data_collator)
+    else:
+        train_dataset = LazySupervisedDataset(tokenizer=tokenizer,
+                                              data_path=ann_list[0],
+                                              data_args=data_args)
+        val_dataset = LazySupervisedDataset(tokenizer=tokenizer,
+                                            data_path=ann_list[1],
+                                            data_args=data_args)
+        data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
+        return dict(train_dataset=train_dataset,
+                    eval_dataset=val_dataset,
+                    data_collator=data_collator)
 
 
 def check_module(module, name):

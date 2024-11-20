@@ -274,7 +274,7 @@ class LLaVATrainer(Trainer):
                 torch.save(weight_to_save, os.path.join(output_dir, f'retriever.bin'))
         else:
             super(LLaVATrainer, self)._save_checkpoint(model, trial, metrics)
-            '''
+
             if self.args.lora_enable is True:
                 # Also save non-adapter weights
                 from transformers.trainer_utils import PREFIX_CHECKPOINT_DIR
@@ -293,7 +293,7 @@ class LLaVATrainer(Trainer):
                     self.model.config.save_pretrained(output_dir)
                     self.model.save_pretrained(output_dir, state_dict=state_dict)
                     torch.save(non_lora_state_dict, os.path.join(output_dir, 'non_lora_trainables.bin'))
-            '''
+
     def _save(self, output_dir: Optional[str] = None, state_dict=None):
         if getattr(self.args, 'tune_mm_mlp_adapter', False):
             pass
@@ -373,8 +373,12 @@ class LLaVATrainer(Trainer):
 
             self.log(logs)
             torch.cuda.empty_cache()
+
+        metrics = None
+        if self.control.should_evaluate:
+            metrics = self._evaluate(trial, ignore_keys_for_eval)
+
         if self.control.should_save:
-            metrics = None
             self._save_checkpoint(model, trial, metrics)
             torch.cuda.empty_cache()
 
