@@ -13,9 +13,9 @@ def merge_lora(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, required=False, default='')
-    parser.add_argument("--model-base", type=str, required=False, default='meta-')
-    parser.add_argument("--save-model-path", type=str, required=False)
+    parser.add_argument("--model-path", type=str, required=False, default='/home/niudt/project/llarva_more/mirage/checkpoints/mirage_qformer_ft_lora')
+    parser.add_argument("--model-base", type=str, required=False, default='/home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B_main')
+    parser.add_argument("--save-model-path", type=str, required=False, default='/home/niudt/project/llarva_more/mirage/checkpoints/mirage_qformer_ft_')
 
     args = parser.parse_args()
 
