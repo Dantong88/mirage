@@ -78,7 +78,7 @@ def demo(model_path, image_paths, prompt, num_retrievals=1):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, default="/home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B")
+    parser.add_argument("--model-path", type=str, default="/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/close_jar_initial_test_ws8_b32_10ep_5e-5-checkpoint-15465")
     parser.add_argument("--max-num-retrievals", type=int, default=3)
     parser.add_argument("--image-folder", type=str, default="/home/niudt/project/llarva_more/mirage/test_images")
     parser.add_argument("--prompt", type=str, default="what is the gripper's motion across these three images")
