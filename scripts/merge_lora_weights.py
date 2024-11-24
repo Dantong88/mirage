@@ -15,21 +15,21 @@ def merge_lora(args):
         tokenizer.save_pretrained(args.save_model_path)
 
     if args.save_split:
-        save_dir = os.path.join(os.path.dirname(model_path), 'split', 'part')
+        save_dir = os.path.join(os.path.dirname(model_path), 'split', 'llarva-part')
         os.makedirs(save_dir, exist_ok=True)
 
         qformer = model.model.qformer
         # retriever = model.model.retriever
         mm_projector = model.model.mm_projector
-        torch.save(qformer, os.path.join(save_dir, "qformer.pth"))
+        torch.save(qformer.state_dict(), os.path.join(save_dir, "qformer.pth"))
         # torch.save(retriever, os.path.join(save_dir, "retriever.pth"))
-        torch.save(mm_projector, os.path.join(save_dir, "mm_projector.pth"))
+        torch.save(mm_projector.state_dict(), os.path.join(save_dir, "mm_projector.pth"))
 
         del model.model.qformer
         del model.model.vision_tower
         del model.model.mm_projector
 
-        save_dir = os.path.join(os.path.dirname(model_path), 'split', 'main')
+        save_dir = os.path.join(os.path.dirname(model_path), 'split', 'llarva-main')
         os.makedirs(save_dir, exist_ok=True)
         model.save_pretrained(save_dir)
 
@@ -41,13 +41,13 @@ def merge_lora(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/lora/close_jar_initial_test_ws8_b32_10ep_5e-5/checkpoint-15465-lora-mirage')
-    parser.add_argument("--model-base", type=str, required=False, default='/home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B_main')
-    parser.add_argument("--save-model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/close_jar_initial_test_ws8_b32_10ep_5e-5-checkpoint-15465')
+    parser.add_argument("--model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/lora/mirage-lora-close_jar_initial_test_ws8_b32_10ep_1e-5_from3ep/checkpoint-5155-llarva-lora')
+    parser.add_argument("--model-base", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/split/llarva-main')
+    parser.add_argument("--save-model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/mirage-close_jar_initial_test_ws8_b32_10ep_1e-5_from3ep-checkpoint-5155')
     parser.add_argument("--save-merge", type=bool, required=False,
                         default=True)
     parser.add_argument("--save-split", type=bool, required=False,
-                        default=True)
+                        default=False)
 
     args = parser.parse_args()
 

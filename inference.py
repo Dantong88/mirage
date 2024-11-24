@@ -78,7 +78,7 @@ class DEMO:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, default="/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/close_jar_initial_test_ws8_b32_10ep_5e-5-checkpoint-15465-llarva")
+    parser.add_argument("--model-path", type=str, default="/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/mirage-close_jar_initial_test_ws8_b32_10ep_1e-5_from3ep-checkpoint-5155")
     parser.add_argument("--max-num-retrievals", type=int, default=32)
     parser.add_argument('--test-anns', type=str, default='/home/yuvan/project/vhs_exploration_nov16/close_jar/val_4148_nov21.json')
     args = parser.parse_args()
