@@ -11,8 +11,8 @@ def read_image_to_tensor_v2(img):
     return img .astype(np.float32)
 
 class VisualTokenizer():
-    def __init__(self, device_map, ckpts = "/home/niudt/vqlm/muse/ckpts/laion"):
-        net = VQGANModel.from_pretrained(ckpts).to(device_map)
+    def __init__(self, device_map = 'auto', ckpts = "/home/niudt/vqlm/muse/ckpts/laion"):
+        net = VQGANModel.from_pretrained(ckpts).cuda()
         net = net.eval()
         self.tokenizer = net
 
@@ -66,20 +66,20 @@ class LVMVisionTower(nn.Module):
             else:
                 self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
 
-    def load_model(self, device_map=None):
+    def load_model(self, device_map='auto'):
         if self.is_loaded:
             print('{} is already loaded, `load_model` called again, skipping.'.format(self.vision_tower_name))
             return
 
         self.image_processor = AutoProcessor.from_pretrained(self.vision_tower_name)
         self.vision_tower = LlamaForCausalLM.from_pretrained(
-            '/scratch/partial_datasets/lvma/LRM/cvpr/ckpts-lvm/7b', device_map=device_map)
+            '/scratch/partial_datasets/lvma/LRM/cvpr/ckpts-lvm/7b')
 
 
 
         self.vision_tower.requires_grad_(False)
         self.vqgan = VisualTokenizer(device_map)
-        self.linear_proj = nn.Linear(4096, 1024, bias=True)
+        # self.linear_proj = nn.Linear(4096, 1024, bias=True)
 
         self.is_loaded = True
 
@@ -108,7 +108,7 @@ class LVMVisionTower(nn.Module):
             vq_sequence = vq_sequence.view(batch_size, -1, 256)
             vq_sequence = vq_sequence.view(batch_size, -1)
             image_forward_outs = self.vision_tower(vq_sequence.to(device=self.device), output_hidden_states=True)['hidden_states'][-1]
-            image_forward_outs = self.linear_proj(image_forward_outs)
+            # image_forward_outs = self.linear_proj(image_forward_outs)
             hidden_size = image_forward_outs.shape[-1]
             image_forward_outs = image_forward_outs.view(batch_size, -1, 256, hidden_size)
             image_features = image_forward_outs.view(-1, 256, hidden_size)

@@ -71,12 +71,12 @@ class ModelArguments:
     mm_vision_select_feature: Optional[str] = field(default="patch")
     mm_reduce_token_method: Optional[str] = field(default=None)
     # Qformer config
-    qformer_hidden_size: Optional[int] = field(default=1024)
+    qformer_hidden_size: Optional[int] = field(default=4096)
     qformer_num_attn_heads: Optional[int] = field(default=12)
     qformer_num_layers: Optional[int] = field(default=4)
     qformer_max_position_embeddings: Optional[int] = field(default=1024)
-    qformer_encoder_hidden_size: Optional[int] = field(default=1024)
-    qformer_intermediate_size: Optional[int] = field(default=1024)
+    qformer_encoder_hidden_size: Optional[int] = field(default=4096)
+    qformer_intermediate_size: Optional[int] = field(default=4096)
     qformer_num_query_tokens: Optional[int] = field(default=32)
     # retriever config
     apply_retriever: bool = field(default=False)
@@ -912,6 +912,7 @@ class LLavaLazyDataset(Dataset):
                 try:
                     image = Image.open(os.path.join(image_folder, image_file)).convert('RGB')
                 except:
+                    print('there is a wrong images in {}'.format(str(i)))
                     random_image_array = np.random.randint(0, 256, (128, 128, 3), dtype=np.uint8)
                     image = Image.fromarray(random_image_array)
                 use_clip = False
