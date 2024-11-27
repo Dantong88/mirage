@@ -41,9 +41,9 @@ def merge_lora(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/lora/mirage-lora-lvm-close_jar_initial_test_ws8_b32_10ep_5e-5/checkpoint-1000-llarva-lora')
+    parser.add_argument("--model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/lora/mirage-lora-lvm-4096-close_jar_initial_test_ws8_b32_10ep_5e-5/checkpoint-1000-llarva-lora')
     parser.add_argument("--model-base", type=str, required=False, default='/home/niudt/project/llarva_more/mirage/ckpts/mirage-llama3.1-8.3B_main')
-    parser.add_argument("--save-model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/mirage-lora-lvm-close_jar_initial_test_ws8_b32_10ep_5e-5-checkpoint-1000')
+    parser.add_argument("--save-model-path", type=str, required=False, default='/scratch/partial_datasets/niudt/project/llarva_v2/ckpts/merged/mirage-lvm-4096-close_jar_initial_test_ws8_b32_10ep_5e-5-checkpoint-1000')
     parser.add_argument("--save-merge", type=bool, required=False,
                         default=True)
     parser.add_argument("--save-split", type=bool, required=False,

@@ -73,7 +73,7 @@ class LVMVisionTower(nn.Module):
 
         self.image_processor = AutoProcessor.from_pretrained(self.vision_tower_name)
         self.vision_tower = LlamaForCausalLM.from_pretrained(
-            '/scratch/partial_datasets/lvma/LRM/cvpr/ckpts-lvm/7b')
+            '/scratch/partial_datasets/lvma/LRM/cvpr/ckpts-lvm/7b', torch_dtype=torch.float16).cuda()
 
 
 
