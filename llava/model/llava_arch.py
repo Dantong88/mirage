@@ -86,7 +86,8 @@ class LlavaMetaModel:
 
         self.config.use_mm_proj = True
         self.config.mm_projector_type = getattr(model_args, 'mm_projector_type', 'linear')
-        self.config.mm_hidden_size = vision_tower.hidden_size
+        # self.config.mm_hidden_size = vision_tower.hidden_size
+        self.config.mm_hidden_size = 1024  # vision_tower.hidden_size
         self.config.mm_vision_select_layer = mm_vision_select_layer
         self.config.mm_vision_select_feature = mm_vision_select_feature
         self.config.mm_patch_merge_type = mm_patch_merge_type
@@ -190,7 +191,7 @@ class LlavaMetaForCausalLM(ABC):
     
     def encode_images_qformer(self, clip_images, split_sizes, input_ids=None):
         # clip features
-        image_features = self.get_model().get_vision_tower()(clip_images)
+        image_features = self.get_model().get_vision_tower()(clip_images, split_sizes)
         input_embeds = None
         if input_ids is not None:
             # Process input ids

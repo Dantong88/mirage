@@ -888,6 +888,13 @@ class LLavaLazyDataset(Dataset):
             image = processor(images=image, return_tensors='pt')['pixel_values'][0]
         return image
 
+    def get_vqgan_image(self, img):
+        img = img.resize((256, 256))
+        img = np.array(img) / 255.0
+        img = img.astype(np.float32)
+        img = np.transpose(img, (2, 0, 1))
+        return torch.tensor(img)
+
     def __getitem__(self, i) -> Dict[str, torch.Tensor]:
         sources = self.list_data_dict[i]
         if isinstance(i, int):
@@ -907,7 +914,12 @@ class LLavaLazyDataset(Dataset):
                 except:
                     random_image_array = np.random.randint(0, 256, (128, 128, 3), dtype=np.uint8)
                     image = Image.fromarray(random_image_array)
-                clip_image = self.get_standard_image(image, processor)
+                use_clip = False
+                # use_clip = True  # False
+                if use_clip:
+                    clip_image = self.get_standard_image(image, processor)
+                else:
+                    clip_image = self.get_vqgan_image(image)
                 clip_images.append(clip_image)
             if 'relevant_images' in sources[0]:
                 relevant_images = sources[0]['relevant_images']
